@@ -23,5 +23,8 @@ public class UserService {
             userRepository.save(user);      // save gdy jest wywoływana na istniejącym w db obiekcie to działa jak update
         }
     }
+    public void deleteUser(int userId){
+        userRepository.deleteById(userId);
+    }
 
 }
