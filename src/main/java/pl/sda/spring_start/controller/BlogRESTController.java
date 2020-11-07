@@ -3,11 +3,14 @@ package pl.sda.spring_start.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
+import pl.sda.spring_start.model.Category;
 import pl.sda.spring_start.model.User;
+import pl.sda.spring_start.service.PostService;
 import pl.sda.spring_start.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 // klasa mapująca żądania prokołu http - adres lokalny http://localhost:8080
 //@Controller       //- mapuje żądanie i zwraca widok html
@@ -15,6 +18,8 @@ import java.util.List;
 public class BlogRESTController {
     @Autowired              // wstrzykiwanie zależności
     UserService userService;
+    @Autowired
+    PostService postService;
 
     @PostMapping("/user/register")
     public void registerUser(
@@ -51,6 +56,16 @@ public class BlogRESTController {
             @RequestParam("email") String email
     ){
         return userService.getUserByEmail(email).orElse(new User());
+    }
+    @PostMapping("/post/addPost")
+    public void addPost(
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @RequestParam("category") Category category,
+            @RequestParam("userId") int userId
+    ){
+        Optional<User> userOptional = userService.getUserById(userId);
+        userOptional.ifPresent(user -> postService.addPost(title, content, category, user));
     }
 
 
