@@ -12,7 +12,7 @@ public class BlogRESTController {
     // GET      - SELECT - pobiera zawartość z bazy i zwraca obiekt lub listę obiektów
     // POST     - INSERT - wprowadza dane do bazy i nic nie zwraca
     // PUT      - UPDATE - edytuje dane z bazy i nic nie zwraca
-    // DELETE   - DELETE - usowanie obiektu lub listy obiektów z bazy
+    // DELETE   - DELETE - usuwanie obiektu lub listy obiektów z bazy
     @GetMapping("/")                         // localhost:8080/
     public String home(){
         return "Hello in homepage";
@@ -24,7 +24,7 @@ public class BlogRESTController {
             ){
         return status ? "Hello " + name + " in hompage" : "Your account is locked";
     }
-    @GetMapping("/credentials")
+    @GetMapping("/credentials")         //localhost:8080/credentials?login=miki&password=qwe123
     public String getCredentials(
             @RequestParam("login") String login,
             @RequestParam("password") String password
