@@ -6,7 +6,7 @@ import pl.sda.spring_start.model.User;
 import pl.sda.spring_start.repository.UserRepository;
 
 @Service            // servis - implementuje logikę aplikacji
-public class ServiceController {
+public class UserService {
     @Autowired      // wstrzykiwanie zależności
     UserRepository userRepository;
 

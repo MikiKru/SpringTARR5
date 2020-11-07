@@ -1,7 +1,9 @@
 package pl.sda.spring_start.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.sda.spring_start.model.User;
+import pl.sda.spring_start.service.UserService;
 
 import java.time.LocalDateTime;
 
@@ -9,6 +11,18 @@ import java.time.LocalDateTime;
 //@Controller       //- mapuje żądanie i zwraca widok html
 @RestController     //- mapuje żądania i dane REST - Reprentative State Transfer
 public class BlogRESTController {
+    @Autowired              // wstrzykiwanie zależności
+    UserService userService;
+
+    @PostMapping("/user/register")
+    public void registerUser(
+            @RequestParam("email") String email,
+            @RequestParam("password") String password
+    ){
+        User user = new User(email, password, LocalDateTime.now(), false);
+        userService.registerUser(user);
+    }
+
     // GET      - SELECT - pobiera zawartość z bazy i zwraca obiekt lub listę obiektów
     // POST     - INSERT - wprowadza dane do bazy i nic nie zwraca
     // PUT      - UPDATE - edytuje dane z bazy i nic nie zwraca
@@ -30,14 +44,6 @@ public class BlogRESTController {
             @RequestParam("password") String password
     ){
         return String.format("login : %s \npassword : %s", login, password);
-    }
-    @PostMapping("/user/register")
-    public void registerUser(
-            @RequestParam("email") String email,
-            @RequestParam("password") String password
-    ){
-        User user = new User(email, password, LocalDateTime.now(), false);
-
     }
 
 
