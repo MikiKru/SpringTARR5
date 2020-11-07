@@ -1,9 +1,9 @@
 package pl.sda.spring_start.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pl.sda.spring_start.model.User;
+
+import java.time.LocalDateTime;
 
 // klasa mapująca żądania prokołu http - adres lokalny http://localhost:8080
 //@Controller       //- mapuje żądanie i zwraca widok html
@@ -30,6 +30,14 @@ public class BlogRESTController {
             @RequestParam("password") String password
     ){
         return String.format("login : %s \npassword : %s", login, password);
+    }
+    @PostMapping("/user/register")
+    public void registerUser(
+            @RequestParam("email") String email,
+            @RequestParam("password") String password
+    ){
+        User user = new User(email, password, LocalDateTime.now(), false);
+
     }
 
 
