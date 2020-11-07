@@ -25,4 +25,12 @@ public class Post {
             fetch = FetchType.EAGER
     )
     private User author;
+
+    public Post(String title, String content, LocalDateTime dateAdded, Category category, User author) {
+        this.title = title;
+        this.content = content;
+        this.dateAdded = dateAdded;
+        this.category = category;
+        this.author = author;
+    }
 }
