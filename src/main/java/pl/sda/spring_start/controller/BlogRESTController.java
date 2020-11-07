@@ -7,13 +7,14 @@ import pl.sda.spring_start.model.User;
 import pl.sda.spring_start.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 // klasa mapująca żądania prokołu http - adres lokalny http://localhost:8080
 //@Controller       //- mapuje żądanie i zwraca widok html
 @RestController     //- mapuje żądania i dane REST - Reprentative State Transfer
 public class BlogRESTController {
     @Autowired              // wstrzykiwanie zależności
-            UserService userService;
+    UserService userService;
 
     @PostMapping("/user/register")
     public void registerUser(
@@ -41,6 +42,17 @@ public class BlogRESTController {
 
         }
     }
+    @GetMapping("/users")
+    public List<User> getAllUsers(){
+        return userService.getAllUsersOrderByRegistrationDateTimeDesc();
+    }
+    @GetMapping("/user/email={email}")
+    public User getUserById(
+            @RequestParam("email") String email
+    ){
+        return userService.getUserByEmail(email).orElse(new User());
+    }
+
 
 
     // GET      - SELECT - pobiera zawartość z bazy i zwraca obiekt lub listę obiektów
