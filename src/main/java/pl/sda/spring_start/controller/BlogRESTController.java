@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 import pl.sda.spring_start.model.Category;
+import pl.sda.spring_start.model.Post;
 import pl.sda.spring_start.model.User;
 import pl.sda.spring_start.service.PostService;
 import pl.sda.spring_start.service.UserService;
@@ -65,7 +66,15 @@ public class BlogRESTController {
             @RequestParam("userId") int userId
     ){
         Optional<User> userOptional = userService.getUserById(userId);
-        userOptional.ifPresent(user -> postService.addPost(title, content, category, user));
+        if(userOptional.isPresent()){
+            if(userOptional.get().isStatus()){
+                postService.addPost(title, content, category, userOptional.get());
+            }
+        }
+    }
+    @GetMapping("/posts")
+    public List<Post> getAllPosts(){
+        return postService.getAllPosts();
     }
 
 
