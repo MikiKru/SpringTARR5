@@ -133,4 +133,8 @@ public class BlogRESTController {
         filteredList.addAll(postSet);
         return filteredList;
     }
+    @GetMapping("/posts/stats")
+    public String getStats(){
+        return postService.getPostsStats();
+    }
 }

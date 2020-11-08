@@ -31,5 +31,14 @@ public class PostService {
     public List<Post> getPostsByTitleLikeOrContentLike(String keyWord){
         return postRepository.findAllByTitleLikeOrContentLike("%"+keyWord+"%", "%"+keyWord+"%");
     }
+    public String getPostsStats(){
+        String output = "";
+        // IT : 3
+        // DS : 1
+        for(Category category : postRepository.postStatistics().keySet()){
+            output += category.getCategoryName() + " : " + postRepository.postStatistics().get(category) + "\n";
+        }
+        return output;
+    }
 
 }
