@@ -10,9 +10,7 @@ import pl.sda.spring_start.service.PostService;
 import pl.sda.spring_start.service.UserService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 // klasa mapująca żądania prokołu http - adres lokalny http://localhost:8080
 //@Controller       //- mapuje żądanie i zwraca widok html
@@ -126,7 +124,13 @@ public class BlogRESTController {
         return new ArrayList<>();
     }
     @GetMapping("/posts/keyWordsSearch")
-    public List<Post> getPostsByTitleLikeOrContentLike(String keyWord){
-        return postService.getPostsByTitleLikeOrContentLike(keyWord);
+    public List<Post> getPostsByTitleLikeOrContentLike(String keyWords){
+        Set<Post> postSet = new HashSet<>();
+        for (String keyWord : keyWords.split(",")) {
+            postSet.addAll(postService.getPostsByTitleLikeOrContentLike(keyWord));
+        }
+        List<Post> filteredList = new ArrayList<>();
+        filteredList.addAll(postSet);
+        return filteredList;
     }
 }
