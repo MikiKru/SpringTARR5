@@ -10,6 +10,7 @@ import pl.sda.spring_start.service.PostService;
 import pl.sda.spring_start.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -114,14 +115,15 @@ public class BlogRESTController {
     ){
         return postService.getPostsByCategory(category);
     }
-    @GetMapping("/posts/ByCategoryAndAtuhor")
+    @GetMapping("/posts/ByCategoryAndAuthor")
     public List<Post> getPostsByCategoryAndAuthor(
             @RequestParam("category") Category category,
             @RequestParam("userId") int userId
     ){
-        return postService.getPostsByCategoryAndAuthor(
-                category,
-                userService.getUserById(userId).orElse(new User()));
+        if(userService.getUserById(userId).isPresent()) {
+            return postService.getPostsByCategoryAndAuthor(category, userService.getUserById(userId).get());
+        }
+        return new ArrayList<>();
     }
 
 }
