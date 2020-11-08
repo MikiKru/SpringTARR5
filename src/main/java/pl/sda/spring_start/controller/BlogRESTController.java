@@ -117,9 +117,11 @@ public class BlogRESTController {
     @GetMapping("/posts/ByCategoryAndAtuhor")
     public List<Post> getPostsByCategoryAndAuthor(
             @RequestParam("category") Category category,
-            @RequestParam("author") User author
+            @RequestParam("userId") int userId
     ){
-        return postService.getPostsByCategoryAndAuthor(category,author);
+        return postService.getPostsByCategoryAndAuthor(
+                category,
+                userService.getUserById(userId).orElse(new User()));
     }
 
 }
