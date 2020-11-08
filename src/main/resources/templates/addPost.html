@@ -15,12 +15,15 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto" th:if="${post != null}">
-          <h1 th:text="${post.getTitle()}"></h1>
-          <h3 th:text="${'Category: ' + post.getCategory().getCategoryName()}"></h3>
-          <p th:text="${post.getContent()}"></p>
-      </div>
-      <div class="col-lg-8 col-md-10 mx-auto" th:if="${post == null}">
-          <h1 th:text="'Bad request'"></h1>
+          <h1>Add post form</h1>
+          <form th:action="@{/addPost}" th:method="POST" th:object="${post}">
+              <input th:type="text" th:field="*{title}" placeholder="insert title here"><br>
+              <textarea th:field="*{content}" placeholder="insert content here"></textarea><br>
+              <select th:field="*{category}">
+                <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat.getCategoryName()}"></option>
+              </select><br>
+              <input th:type="submit" th:value="'add post'">
+          </form>
       </div>
     </div>
   </div>
