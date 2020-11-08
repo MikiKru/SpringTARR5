@@ -125,5 +125,8 @@ public class BlogRESTController {
         }
         return new ArrayList<>();
     }
-
+    @GetMapping("/posts/keyWordsSearch")
+    public List<Post> getPostsByTitleLikeOrContentLike(String keyWord){
+        return postService.getPostsByTitleLikeOrContentLike(keyWord);
+    }
 }

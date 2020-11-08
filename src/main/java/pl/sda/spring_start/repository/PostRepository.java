@@ -20,7 +20,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> findAllByCategoryAndAuthor(Category category, User author, Sort sort);
 
     // Szukanie słów kluczowych w tytule i zawartości posta
-    List<Post> findAllByTitleInOrContentIn(List<String> titleWords, List<String> contentWords);
+    List<Post> findAllByTitleLikeOrContentLike(String titlePattern, String contentPattern);
 
     // Statystyki postów - grupowanie postów po kategorii
     @Query(
