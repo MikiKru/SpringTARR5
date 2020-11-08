@@ -27,6 +27,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
             value = "SELECT p.category, count(*) FROM Post p GROUP BY p.category ORDER BY 2 DESC",
             nativeQuery = true
     )
-    Map<Category, Integer> postStatistics();
+    List<Object[]> postStatistics();
 
 }

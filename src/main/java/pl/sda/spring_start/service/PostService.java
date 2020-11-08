@@ -32,12 +32,13 @@ public class PostService {
         return postRepository.findAllByTitleLikeOrContentLike("%"+keyWord+"%", "%"+keyWord+"%");
     }
     public String getPostsStats(){
-        String output = "";
+        String output = "{\n";
         // IT : 3
         // DS : 1
-        for(Category category : postRepository.postStatistics().keySet()){
-            output += category.getCategoryName() + " : " + postRepository.postStatistics().get(category) + "\n";
+        for(Object[] row : postRepository.postStatistics()){
+            output += "\"" + Category.values()[(int) row[0]].getCategoryName() + "\" : " + row[1] + "\n";
         }
+        output += "}";
         return output;
     }
 
