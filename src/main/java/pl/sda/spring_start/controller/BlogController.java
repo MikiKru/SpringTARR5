@@ -1,6 +1,7 @@
 package pl.sda.spring_start.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,10 +26,14 @@ public class BlogController {
         this.postService = postService;
     }
     @GetMapping("/")        // na adresie localhost:8080/
-    public String home(Model model){   // wywołaj metodę home()
+    public String home(
+            Model model,
+            Authentication auth     // można wydobyć dane logowania gdy nie jest null
+    ){   // wywołaj metodę home()
         // dodaje atrybut do obiektu model, który może być przekazany do widoku
         // model.addAttribute(nazwaAtrybutu, wartość);
         model.addAttribute("posts", postService.getAllPosts());
+        model.addAttribute("auth", auth);
         return "index";     // zwracającą nazwę dokumentu html który ma być wyświetlany
     }
     @GetMapping("/posts&{postId}")
