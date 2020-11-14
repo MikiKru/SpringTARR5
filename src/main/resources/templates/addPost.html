@@ -20,7 +20,6 @@
               <div class="form-group">
                   <p th:errors="*{title}"> title error </p>
                   <input class="form-control" th:type="text" th:field="*{title}" placeholder="insert title here"><br>
-                  <p th:errors="*{category}"> category error </p>
                   <select class="form-control" th:field="*{category}">
                       <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat.getCategoryName()}"></option>
                   </select><br>

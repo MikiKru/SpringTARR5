@@ -52,10 +52,12 @@ public class BlogController {
     public String addPost(
             @Valid                                // zwraca błędy walidacji obiektu PostDto
             @ModelAttribute PostDto postDto,      // obiekt model przekazuje obiekt post do metody
-            BindingResult bindingResult           // obiekt zawierający błędy walidacji
+            BindingResult bindingResult,          // obiekt zawierający błędy walidacji
+            Model model
     ){
         if(bindingResult.hasErrors()){
             bindingResult.getFieldErrors().stream().forEach(fieldError -> System.out.println(fieldError.toString()));
+            model.addAttribute("categories", new ArrayList<>(Arrays.asList(Category.values())));
             return "addPost";               // gdy są błędy walidacji to wyświetl z powrotem formularz i nic nie zapisuj
         }
         // zapisanie nowego posta do db
