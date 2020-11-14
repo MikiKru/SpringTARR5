@@ -4,21 +4,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.sda.spring_start.configuration.EncoderAlgorithm;
+import pl.sda.spring_start.model.Role;
 import pl.sda.spring_start.model.User;
+import pl.sda.spring_start.repository.RoleRepository;
 import pl.sda.spring_start.repository.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service            // servis - implementuje logikę aplikacji
 public class UserService {
     @Autowired      // wstrzykiwanie zależności
     UserRepository userRepository;
     @Autowired
+    RoleRepository roleRepository;
+    @Autowired
     EncoderAlgorithm encoderAlgorithm;
 
     public void registerUser(User user){
-
+        // domyślną rolą po rejestracji jest USER -> id = 1
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleRepository.getOne(1));
+        user.setRoles(roles);
         user.setPassword(encoderAlgorithm.getPasswordEncoder().encode(user.getPassword())); // szyfrowanie hasła
         userRepository.save(user);          // INSERT INTO user values (?,?,?,?)
     }
