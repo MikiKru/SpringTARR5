@@ -16,9 +16,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/posts&**").hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
                 .anyRequest().permitAll()   // każde inne żądanie nie uwierzytelniaj
                 .and()
-                    .formLogin()            // defaultowy formularz logowania
+                    .csrf().disable()
+                    .formLogin().loginPage("/login")    // adres dla żądania GET wyświetlający stronę logowania
+                    .usernameParameter("email")         // nazwa pola w kóre wprowadzamy email (th:name)
+                    .passwordParameter("password")      // nazwa pola w kóre wprowadzamy password (th:name)
+                    .loginProcessingUrl("/login_process")   // adres na który wysyłamy dane logowania (th:action)
+                    .failureUrl("/login?error=true")         // adres na który jesteśmy przekierowania po błędnym logowaniu
+                    .defaultSuccessUrl("/")             // po porawnym logowaniu przekierowanie na adres /
                 .and()
-                    .httpBasic();           // metode typu basic
+                    .logout()                           // wylogowanie
+                    .logoutUrl("/logout")               // adres do wylogowania
+                    .logoutSuccessUrl("/");             // przekierowanie po wylogowaniu
     }
 
 }
