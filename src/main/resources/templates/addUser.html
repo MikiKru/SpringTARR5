@@ -18,6 +18,7 @@
           <h1>Registration</h1>
           <form th:action="@{/register}" th:method="POST" th:object="${userDto}">
               <div class="form-group">
+                  <div th:if="${emailError != null}" th:text="${emailError}" style="font-size:10px" class="alert alert-danger" role="alert"> email error </div>
                   <div th:errors="*{email}" style="font-size:10px" class="alert alert-danger" role="alert"> email error </div>
                   <input class="form-control" th:type="email" th:field="*{email}" placeholder="insert e-mail here"><br>
                   <div th:errors="*{password}" style="font-size:10px" class="alert alert-danger" role="alert"> password error </div>

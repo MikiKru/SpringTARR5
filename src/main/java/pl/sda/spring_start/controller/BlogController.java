@@ -72,9 +72,14 @@ public class BlogController {
     @PostMapping("/register")
     public String addUser(
             @Valid @ModelAttribute UserDto userDto,
-            BindingResult bindingResult
+            BindingResult bindingResult,
+            Model model
     ){
         if(bindingResult.hasErrors()){
+            return "addUser";
+        }
+        if(userService.getUserByEmail(userDto.getEmail()).isPresent()){     // istnieje już taki email
+            model.addAttribute("emailError", "e-mail address is not unique");
             return "addUser";
         }
         userService.registerUser(new User(userDto.getEmail(), userDto.getPassword(),

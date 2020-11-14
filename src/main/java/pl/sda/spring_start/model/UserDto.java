@@ -16,7 +16,7 @@ public class UserDto {
     @Email(message = "Email address is not valid")
     private String email;
     @Size(min = 8, max = 128, message = "Password must have number of characters between {min} and {max}")
-//    @Pattern(regexp = "([A-Z]{1,}.*\\d{1,}|\\d{1,}.*[A-Z]{1,})", message = "Password must have ath least 1 capital letter and 1 digit")
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$", message = "Password is not valid")
+    @Pattern(regexp = "([A-Z]{1,}.*\\d{1,}|\\d{1,}.*[A-Z]{1,})", message = "Password must have ath least 1 capital letter and 1 digit")
+//    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$", message = "Password is not valid")
     private String password;
 }
