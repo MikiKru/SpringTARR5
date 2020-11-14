@@ -1,11 +1,16 @@
 package pl.sda.spring_start.model;
 
-import javax.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
     @NotBlank(message = "Email must be not empty")
     @Email(message = "Email address is not valid")
