@@ -37,15 +37,19 @@ public class BlogController {
         return "index";     // zwracającą nazwę dokumentu html który ma być wyświetlany
     }
     @GetMapping("/posts&{postId}")
-    public String getPost(@PathVariable("postId") int postId, Model model){
+    public String getPost(
+            @PathVariable("postId") int postId, Model model, Authentication auth
+    ){
         Optional<Post> postOptional = postService.getPostById(postId);
         postOptional.ifPresent(post -> model.addAttribute("post", post));
+        model.addAttribute("auth", auth);
         return "post";
     }
     @GetMapping("/addPost")                 // przejście metodą GET na stronę formularze
-    public String addPost(Model model){     // i przekazanie pustego obiektu Post
+    public String addPost(Model model, Authentication auth){     // i przekazanie pustego obiektu Post
         model.addAttribute("postDto", new PostDto());
         model.addAttribute("categories", new ArrayList<>(Arrays.asList(Category.values())));
+        model.addAttribute("auth", auth);
         return "addPost";                   // tu znajduje się formularz i jest uzupłeniany przez użytkownika
                                             // gdy wprowadza pola do formularza to set-uje pola klasy Post
     }
@@ -67,8 +71,9 @@ public class BlogController {
         return "redirect:/";                // przekierowuje na ades, który zwraca jakiś widok
     }
     @GetMapping("/register")
-    public String addUser(Model model){
+    public String addUser(Model model, Authentication auth){
         model.addAttribute("userDto", new UserDto());
+        model.addAttribute("auth", auth);
         return "addUser";
     }
     @PostMapping("/register")
@@ -89,13 +94,16 @@ public class BlogController {
         return "redirect:/";
     }
     @GetMapping("/login")       // adres zwracający frmularz logowania
-    public String login(){
+    public String login(Model model, Authentication auth){
+        model.addAttribute("auth", auth);
         return "login";         // zwrócenie szablonu widoku o nazwie login.html
     }
     @GetMapping("/login&error={loginError}")    // adres zwracający formularz logowania gdy wystąpiły błędy logowania
-    public String login(@PathVariable("loginError") Boolean loginError, Model model){
+    public String login(@PathVariable("loginError") Boolean loginError, Model model,
+                        Authentication auth){
         System.out.println(loginError.getClass());
         model.addAttribute("loginError", loginError);
+        model.addAttribute("auth", auth);
         return "login";
     }
 
