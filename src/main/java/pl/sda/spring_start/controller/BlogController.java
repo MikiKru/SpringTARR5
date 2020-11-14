@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.sda.spring_start.model.*;
 import pl.sda.spring_start.service.PostService;
 import pl.sda.spring_start.service.UserService;
@@ -86,9 +83,15 @@ public class BlogController {
                 LocalDateTime.now(), true));
         return "redirect:/";
     }
-    @GetMapping("/login")
+    @GetMapping("/login")       // adres zwracający frmularz logowania
     public String login(){
         return "login";         // zwrócenie szablonu widoku o nazwie login.html
+    }
+    @GetMapping("/login&error={loginError}")    // adres zwracający formularz logowania gdy wystąpiły błędy logowania
+    public String login(@PathVariable("loginError") Boolean loginError, Model model){
+        System.out.println(loginError.getClass());
+        model.addAttribute("loginError", loginError);
+        return "login";
     }
 
 }

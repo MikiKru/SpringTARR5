@@ -21,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .usernameParameter("email")         // nazwa pola w kóre wprowadzamy email (th:name)
                     .passwordParameter("password")      // nazwa pola w kóre wprowadzamy password (th:name)
                     .loginProcessingUrl("/login_process")   // adres na który wysyłamy dane logowania (th:action)
-                    .failureUrl("/login?error=true")         // adres na który jesteśmy przekierowania po błędnym logowaniu
+                    .failureUrl("/login&error=true")         // adres na który jesteśmy przekierowania po błędnym logowaniu
                     .defaultSuccessUrl("/")             // po porawnym logowaniu przekierowanie na adres /
                 .and()
                     .logout()                           // wylogowanie
