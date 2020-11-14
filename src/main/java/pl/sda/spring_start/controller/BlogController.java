@@ -86,6 +86,9 @@ public class BlogController {
                 LocalDateTime.now(), true));
         return "redirect:/";
     }
-
+    @GetMapping("/login")
+    public String login(){
+        return "login";         // zwrócenie szablonu widoku o nazwie login.html
+    }
 
 }
