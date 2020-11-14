@@ -18,6 +18,6 @@ public class PostDto {  // DTO - data transfer object - obiekt wykorzystywany w 
     @NotBlank(message = "Content must be not empty")
     @Size(min = 100, max = 5000, message = "Message must have number of characters between {min} and {max}")
     private String content;
-    @NotBlank(message = "Category must be not empty")
+//    @NotBlank(message = "Category must be not empty")
     private Category category;
 }

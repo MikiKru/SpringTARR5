@@ -43,7 +43,7 @@ public class BlogController {
     }
     @GetMapping("/addPost")                 // przejście metodą GET na stronę formularze
     public String addPost(Model model){     // i przekazanie pustego obiektu Post
-        model.addAttribute("post", new PostDto());
+        model.addAttribute("postDto", new PostDto());
         model.addAttribute("categories", new ArrayList<>(Arrays.asList(Category.values())));
         return "addPost";                   // tu znajduje się formularz i jest uzupłeniany przez użytkownika
                                             // gdy wprowadza pola do formularza to set-uje pola klasy Post
