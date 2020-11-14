@@ -18,7 +18,8 @@ public class UserService {
     EncoderAlgorithm encoderAlgorithm;
 
     public void registerUser(User user){
-        user.setPassword(encoderAlgorithm.getPasswordEncoder().encode(user.getPassword()));
+
+        user.setPassword(encoderAlgorithm.getPasswordEncoder().encode(user.getPassword())); // szyfrowanie hasła
         userRepository.save(user);          // INSERT INTO user values (?,?,?,?)
     }
     public void activateUser(int userId){   // UPDATE user SET status = 1 WHERE user_id = ?;
