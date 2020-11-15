@@ -132,4 +132,21 @@ public class BlogController {
         }
         return "redirect:/";        // gdy nie ma posta o określonym id przekierowujemy na stronę domową
     }
+    @PostMapping("/editPost&{postId}")
+    public String updatePost(
+            @PathVariable("postId") int postId,
+            @Valid @ModelAttribute PostDto postDto,
+            BindingResult bindingResult
+            ){
+        // save() działa jak update dla istniejącego obiektu w DB
+        if(postService.getPostById(postId).isPresent()){
+            Post post = postService.getPostById(postId).get();
+            post.setTitle(postDto.getTitle());
+            post.setContent(postDto.getContent());
+            post.setCategory(postDto.getCategory());
+            // do rozważenia co z autorem posta ???
+            return "redirect:/posts&"+postId;
+        }
+        return "redirect:/";
+    }
 }
