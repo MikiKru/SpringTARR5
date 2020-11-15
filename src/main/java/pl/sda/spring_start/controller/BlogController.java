@@ -23,40 +23,44 @@ import java.util.stream.Collectors;
 public class BlogController {
     private UserService userService;
     private PostService postService;
+
     @Autowired
     public BlogController(UserService userService, PostService postService) {
         this.userService = userService;
         this.postService = postService;
     }
+
     @GetMapping("/")        // na adresie localhost:8080/
     public String home(
             Model model,
-            Authentication auth     // można wydobyć dane logowania gdy nie jest null
-    ){   // wywołaj metodę home()
+            Authentication auth    // można wydobyć dane logowania gdy nie jest null
+    ) {   // wywołaj metodę home()
         // dodaje atrybut do obiektu model, który może być przekazany do widoku
         // model.addAttribute(nazwaAtrybutu, wartość);
         model.addAttribute("posts", postService.getAllPosts());
         model.addAttribute("auth", userService.getCredentials(auth));
-
         return "index";     // zwracającą nazwę dokumentu html który ma być wyświetlany
     }
+
     @GetMapping("/posts&{postId}")
     public String getPost(
             @PathVariable("postId") int postId, Model model, Authentication auth
-    ){
+    ) {
         Optional<Post> postOptional = postService.getPostById(postId);
         postOptional.ifPresent(post -> model.addAttribute("post", post));
         model.addAttribute("auth", userService.getCredentials(auth));
         return "post";
     }
+
     @GetMapping("/addPost")                 // przejście metodą GET na stronę formularze
-    public String addPost(Model model, Authentication auth){     // i przekazanie pustego obiektu Post
+    public String addPost(Model model, Authentication auth) {     // i przekazanie pustego obiektu Post
         model.addAttribute("postDto", new PostDto());
         model.addAttribute("categories", new ArrayList<>(Arrays.asList(Category.values())));
         model.addAttribute("auth", userService.getCredentials(auth));
         return "addPost";                   // tu znajduje się formularz i jest uzupłeniany przez użytkownika
-                                            // gdy wprowadza pola do formularza to set-uje pola klasy Post
+        // gdy wprowadza pola do formularza to set-uje pola klasy Post
     }
+
     @PostMapping("/addPost")                // przekazanie parametrów z formularza metodą POST
     public String addPost(
             @Valid                                // zwraca błędy walidacji obiektu PostDto
@@ -64,8 +68,8 @@ public class BlogController {
             BindingResult bindingResult,          // obiekt zawierający błędy walidacji
             Model model,
             Authentication auth
-    ){
-        if(bindingResult.hasErrors()){
+    ) {
+        if (bindingResult.hasErrors()) {
             bindingResult.getFieldErrors().stream().forEach(fieldError -> System.out.println(fieldError.toString()));
             model.addAttribute("categories", new ArrayList<>(Arrays.asList(Category.values())));
             return "addPost";               // gdy są błędy walidacji to wyświetl z powrotem formularz i nic nie zapisuj
@@ -78,22 +82,24 @@ public class BlogController {
                 userService.getUserByEmail(loggedEmail).get());  // przypisanie dodawanego posta do zalogowanego użytkownika
         return "redirect:/";                // przekierowuje na ades, który zwraca jakiś widok
     }
+
     @GetMapping("/register")
-    public String addUser(Model model, Authentication auth){
+    public String addUser(Model model, Authentication auth) {
         model.addAttribute("userDto", new UserDto());
         model.addAttribute("auth", userService.getCredentials(auth));
         return "addUser";
     }
+
     @PostMapping("/register")
     public String addUser(
             @Valid @ModelAttribute UserDto userDto,
             BindingResult bindingResult,
             Model model
-    ){
-        if(bindingResult.hasErrors()){
+    ) {
+        if (bindingResult.hasErrors()) {
             return "addUser";
         }
-        if(userService.getUserByEmail(userDto.getEmail()).isPresent()){     // istnieje już taki email
+        if (userService.getUserByEmail(userDto.getEmail()).isPresent()) {     // istnieje już taki email
             model.addAttribute("emailError", "e-mail address is not unique");
             return "addUser";
         }
@@ -101,28 +107,39 @@ public class BlogController {
                 LocalDateTime.now(), true));
         return "redirect:/";
     }
+
     @GetMapping("/login")       // adres zwracający frmularz logowania
-    public String login(Model model, Authentication auth){
+    public String login(Model model, Authentication auth) {
         model.addAttribute("auth", userService.getCredentials(auth));
         return "login";         // zwrócenie szablonu widoku o nazwie login.html
     }
+
     @GetMapping("/login&error={loginError}")    // adres zwracający formularz logowania gdy wystąpiły błędy logowania
     public String login(@PathVariable("loginError") Boolean loginError, Model model,
-                        Authentication auth){
+                        Authentication auth) {
         System.out.println(loginError.getClass());
         model.addAttribute("loginError", loginError);
         model.addAttribute("auth", userService.getCredentials(auth));
         return "login";
     }
+
     @GetMapping("/deletePost&{postId}")
-    public String deletePost(@PathVariable("postId") int postId){
-        postService.deletePostById(postId);
-        return "redirect:/";
+    public String deletePost(@PathVariable("postId") int postId, Model model, Authentication auth) {
+        if (postService.getPostById(postId).isPresent()) {
+            postService.deletePostById(postId);
+            return "redirect:/";
+        }
+        model.addAttribute("errorMessage", "Delete action aborted! There is not post with id = " + postId);
+        model.addAttribute("posts", postService.getAllPosts());
+        model.addAttribute("auth", userService.getCredentials(auth));
+        return "index";
+
     }
+
     @GetMapping("/editPost&{postId}")
     public String updatePost(
-            @PathVariable("postId") Integer postId, Model model, Authentication auth){
-        if(postService.getPostById(postId).isPresent()) {
+            @PathVariable("postId") Integer postId, Model model, Authentication auth) {
+        if (postService.getPostById(postId).isPresent()) {
             Post postToUpdate = postService.getPostById(postId).get();
             PostDto postDto = new PostDto(
                     postToUpdate.getTitle(), postToUpdate.getContent(), postToUpdate.getCategory());
@@ -132,22 +149,26 @@ public class BlogController {
             model.addAttribute("auth", userService.getCredentials(auth));
             return "addPost";
         }
-        return "redirect:/";        // gdy nie ma posta o określonym id przekierowujemy na stronę domową
+        model.addAttribute("errorMessage", "Update action aborted! There is not post with id = " + postId);
+        model.addAttribute("posts", postService.getAllPosts());
+        model.addAttribute("auth", userService.getCredentials(auth));
+        return "index";     // gdy nie ma posta o określonym id przekierowujemy na stronę domową
     }
+
     @PostMapping("/editPost&{postId}")
     public String updatePost(
             @PathVariable("postId") int postId,
             @Valid @ModelAttribute("postDto") PostDto postDto,
             BindingResult bindingResult,
             Model model
-            ){
-            if(bindingResult.hasErrors()){
-                model.addAttribute("categories", new ArrayList<>(Arrays.asList(Category.values())));
-                return "addPost";
-            }
-            if(postService.editPost(postId,postDto)) {
-                return "redirect:/posts&" + postId;
-            }
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", new ArrayList<>(Arrays.asList(Category.values())));
+            return "addPost";
+        }
+        if (postService.editPost(postId, postDto)) {
+            return "redirect:/posts&" + postId;
+        }
         return "redirect:/";
     }
 }
