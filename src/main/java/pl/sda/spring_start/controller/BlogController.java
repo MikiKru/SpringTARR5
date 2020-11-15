@@ -118,4 +118,18 @@ public class BlogController {
         postService.deletePostById(postId);
         return "redirect:/";
     }
+    @GetMapping("/editPost&{postId}")
+    public String updatePost(
+            @PathVariable("postId") int postId, Model model, Authentication auth){
+        if(postService.getPostById(postId).isPresent()) {
+            Post postToUpdate = postService.getPostById(postId).get();
+            PostDto postDto = new PostDto(
+                    postToUpdate.getTitle(), postToUpdate.getContent(), postToUpdate.getCategory());
+            model.addAttribute("postDto", postDto);
+            model.addAttribute("categories", new ArrayList<>(Arrays.asList(Category.values())));
+            model.addAttribute("auth", userService.getCredentials(auth));
+            return "addPost";
+        }
+        return "redirect:/";        // gdy nie ma posta o określonym id przekierowujemy na stronę domową
+    }
 }
