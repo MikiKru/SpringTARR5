@@ -36,6 +36,7 @@ public class BlogController {
         // model.addAttribute(nazwaAtrybutu, wartość);
         model.addAttribute("posts", postService.getAllPosts());
         model.addAttribute("auth", userService.getCredentials(auth));
+
         return "index";     // zwracającą nazwę dokumentu html który ma być wyświetlany
     }
     @GetMapping("/posts&{postId}")
@@ -112,5 +113,9 @@ public class BlogController {
         model.addAttribute("auth", auth);
         return "login";
     }
-
+    @GetMapping("/deletePost&{postId}")
+    public String deletePost(@PathVariable("postId") int postId){
+        postService.deletePostById(postId);
+        return "redirect:/";
+    }
 }

@@ -22,11 +22,17 @@
           <p class="post-meta" th:text="'Author: ' + ${post.getAuthor().getEmail()} +
           ' Category: ' + ${post.getCategory().getCategoryName().toUpperCase()} +
           ' Date: ' + ${#temporals.format(post.getDateAdded(), 'dd-MM-yyyy HH:mm')}"> author category dateAdded </p>
+          <div class="clearfix">
+            <a class="fa fa-trash" aria-hidden="true" th:href="@{'/deletePost&'+${post.getPostId()}}">delete</a>
+            <a class="fas fa-edit" aria-hidden="true" th:href="@{'/editPost&'+${post.getPostId()}}">edit</a>
+          </div>
           <hr>
         </div>
         <!-- Pager -->
         <div class="clearfix">
-          <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+          <!--<a class="fas fa-plus" href="#"> older posts</a>-->
+          <a type="button" class="btn btn-outline-warning waves-effect px-3">
+            <i class="fas fa-rocket" aria-hidden="true"></i> older posts</a>
         </div>
       </div>
     </div>

@@ -17,6 +17,9 @@ public class PostService {
     @Autowired
     PostRepository postRepository;
 
+    public void deletePostById(int postId){
+        postRepository.deleteById(postId);
+    }
     public void addPost(String title, String content, Category category, User author){
         postRepository.save(new Post(title,content, LocalDateTime.now(), category, author));
     }
