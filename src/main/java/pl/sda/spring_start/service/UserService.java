@@ -2,6 +2,8 @@ package pl.sda.spring_start.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pl.sda.spring_start.configuration.EncoderAlgorithm;
 import pl.sda.spring_start.model.Role;
@@ -22,6 +24,10 @@ public class UserService {
     RoleRepository roleRepository;
     @Autowired
     EncoderAlgorithm encoderAlgorithm;
+
+    public UserDetails getCredentials(Authentication auth){
+        return auth != null ? (UserDetails) auth.getPrincipal() : null;
+    }
 
     public void registerUser(User user){
         // domyślną rolą po rejestracji jest USER -> id = 1

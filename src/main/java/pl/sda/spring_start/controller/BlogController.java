@@ -2,6 +2,7 @@ package pl.sda.spring_start.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller     // klasa mapująca url na wywołanie metody i zwracająca widok html
 public class BlogController {
@@ -33,7 +35,7 @@ public class BlogController {
         // dodaje atrybut do obiektu model, który może być przekazany do widoku
         // model.addAttribute(nazwaAtrybutu, wartość);
         model.addAttribute("posts", postService.getAllPosts());
-        model.addAttribute("auth", auth);
+        model.addAttribute("auth", userService.getCredentials(auth));
         return "index";     // zwracającą nazwę dokumentu html który ma być wyświetlany
     }
     @GetMapping("/posts&{postId}")
@@ -58,16 +60,20 @@ public class BlogController {
             @Valid                                // zwraca błędy walidacji obiektu PostDto
             @ModelAttribute PostDto postDto,      // obiekt model przekazuje obiekt post do metody
             BindingResult bindingResult,          // obiekt zawierający błędy walidacji
-            Model model
+            Model model,
+            Authentication auth
     ){
         if(bindingResult.hasErrors()){
             bindingResult.getFieldErrors().stream().forEach(fieldError -> System.out.println(fieldError.toString()));
             model.addAttribute("categories", new ArrayList<>(Arrays.asList(Category.values())));
             return "addPost";               // gdy są błędy walidacji to wyświetl z powrotem formularz i nic nie zapisuj
         }
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        String loggedEmail = userDetails.getUsername();         // adres email z pobrany z danych logowania
+        userDetails.getAuthorities().stream().forEach(o -> System.out.println(o));
         // zapisanie nowego posta do db
         postService.addPost(postDto.getTitle(), postDto.getContent(), postDto.getCategory(),
-                userService.getUserById(3).get());  // rozwiązanie na chwilę !!!
+                userService.getUserByEmail(loggedEmail).get());  // przypisanie dodawanego posta do zalogowanego użytkownika
         return "redirect:/";                // przekierowuje na ades, który zwraca jakiś widok
     }
     @GetMapping("/register")
