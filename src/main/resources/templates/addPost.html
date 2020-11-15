@@ -31,7 +31,7 @@
       </div>
         <div class="col-lg-8 col-md-10 mx-auto" th:if="${postId != null}">
             <h1>Update post form</h1>
-            <form th:action="@{/editPost}" th:method="POST" th:object="${postDto}">
+            <form th:action="@{'/editPost&'+${postId}}" th:method="POST" th:object="${postDto}">
                 <div class="form-group">
                     <div th:errors="*{title}" style="font-size:10px" class="alert alert-danger" role="alert"> title error </div>
                     <input class="form-control" th:type="text" th:field="*{title}" placeholder="insert title here"><br>
