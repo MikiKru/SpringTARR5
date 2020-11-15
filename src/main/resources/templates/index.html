@@ -37,9 +37,12 @@
         </div>
         <!-- Pager -->
         <div class="clearfix">
-          <!--<a class="fas fa-plus" href="#"> older posts</a>-->
-          <a type="button" class="btn btn-outline-warning waves-effect px-3">
-            <i class="fas fa-rocket" aria-hidden="true"></i> older posts</a>
+          <a th:each="index : ${pagesIndexes}"
+             th:text="${index}"
+             th:href="@{'/page='+${index}}"
+             type="button"
+             class="btn btn-outline-warning waves-effect px-3">
+          </a>
         </div>
       </div>
     </div>
