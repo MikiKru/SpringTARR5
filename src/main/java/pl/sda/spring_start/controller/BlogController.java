@@ -1,5 +1,6 @@
 package pl.sda.spring_start.controller;
 
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -120,22 +121,23 @@ public class BlogController {
     }
     @GetMapping("/editPost&{postId}")
     public String updatePost(
-            @PathVariable("postId") int postId, Model model, Authentication auth){
+            @PathVariable("postId") Integer postId, Model model, Authentication auth){
         if(postService.getPostById(postId).isPresent()) {
             Post postToUpdate = postService.getPostById(postId).get();
             PostDto postDto = new PostDto(
                     postToUpdate.getTitle(), postToUpdate.getContent(), postToUpdate.getCategory());
             model.addAttribute("postDto", postDto);
+            model.addAttribute("postId", postId);
             model.addAttribute("categories", new ArrayList<>(Arrays.asList(Category.values())));
             model.addAttribute("auth", userService.getCredentials(auth));
             return "addPost";
         }
         return "redirect:/";        // gdy nie ma posta o określonym id przekierowujemy na stronę domową
     }
-    @PostMapping("/editPost&{postId}")
+    @PostMapping("/editPost")
     public String updatePost(
-            @PathVariable("postId") int postId,
-            @Valid @ModelAttribute PostDto postDto,
+            @ModelAttribute("postId") int postId,
+            @Valid @ModelAttribute("postDto") PostDto postDto,
             BindingResult bindingResult
             ){
         // save() działa jak update dla istniejącego obiektu w DB
