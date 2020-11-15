@@ -5,57 +5,64 @@
 <head th:replace="fragments/head.html :: head"></head>
 
 <body>
-  <!--navigation-->
-  <nav th:replace="fragments/navigation.html :: nav"></nav>
+<!--navigation-->
+<nav th:replace="fragments/navigation.html :: nav"></nav>
 
-  <!-- Page Header -->
-  <header th:replace="fragments/header.html :: header(title='Michael\'s Blog', subtitle='The best blog in the World')"></header>
+<!-- Page Header -->
+<header th:replace="fragments/header.html :: header(title='Michael\'s Blog', subtitle='The best blog in the World')"></header>
 
-  <!-- Main Content -->
-  <div class="container">
+<!-- Main Content -->
+<div class="container">
     <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
-        <div th:if="${errorMessage != null}" th:text="${errorMessage}"
-             style="font-size:14px" class="alert alert-danger" role="alert"> error </div>
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <div th:if="${errorMessage != null}" th:text="${errorMessage}"
+                 style="font-size:14px" class="alert alert-danger" role="alert"> error
+            </div>
 
-        <div class="post-preview" th:each="post : ${posts}">
-          <a th:href="@{'/posts&' + ${post.getPostId()}}">
-            <h2 class="post-title" th:text="${post.getTitle().toUpperCase()}"> post title </h2>
-          </a>
-          <p class="post-meta" th:text="'Author: ' + ${post.getAuthor().getEmail()} +
+            <div class="post-preview" th:each="post : ${posts}">
+                <a th:href="@{'/posts&' + ${post.getPostId()}}">
+                    <h2 class="post-title" th:text="${post.getTitle().toUpperCase()}"> post title </h2>
+                </a>
+                <p class="post-meta" th:text="'Author: ' + ${post.getAuthor().getEmail()} +
           ' Category: ' + ${post.getCategory().getCategoryName().toUpperCase()} +
           ' Date: ' + ${#temporals.format(post.getDateAdded(), 'dd-MM-yyyy HH:mm')}"> author category dateAdded </p>
-          <div class="clearfix" th:if="${auth != null}">
-            <a th:if="${auth.getAuthorities().toString().toUpperCase().contains('ADMIN') ||
+                <div class="clearfix" th:if="${auth != null}">
+                    <a th:if="${auth.getAuthorities().toString().toUpperCase().contains('ADMIN') ||
                         auth.getUsername().equals(post.getAuthor().getEmail())}"
-               class="fa fa-trash" aria-hidden="true" th:href="@{'/deletePost&'+${post.getPostId()}}">delete</a>
-            <a th:if="${auth.getAuthorities().toString().toUpperCase().contains('ADMIN') ||
+                       class="fa fa-trash" aria-hidden="true" th:href="@{'/deletePost&'+${post.getPostId()}}">delete</a>
+                    <a th:if="${auth.getAuthorities().toString().toUpperCase().contains('ADMIN') ||
                         auth.getUsername().equals(post.getAuthor().getEmail())}"
-               class="fas fa-edit" aria-hidden="true" th:href="@{'/editPost&'+${post.getPostId()}}">edit</a>
-          </div>
-          <hr>
+                       class="fas fa-edit" aria-hidden="true" th:href="@{'/editPost&'+${post.getPostId()}}">edit</a>
+                </div>
+                <hr>
+            </div>
+            <!-- Pager -->
+            <div class="clearfix">
+                <a th:each="index : ${pagesIndexes}"
+                   th:if="${pageIndex == index}"
+                   th:text="${index}"
+                   th:href="@{'/page='+${index}}"
+                   type="button"
+                   class="btn btn-outline-secondary waves-effect px-3"></a>
+                <a th:each="index : ${pagesIndexes}"
+                   th:if="${pageIndex != index}"
+                   th:text="${index}"
+                   th:href="@{'/page='+${index}}"
+                   type="button"
+                   class="btn btn-outline-warning waves-effect px-3"></a>
+            </div>
         </div>
-        <!-- Pager -->
-        <div class="clearfix">
-          <a th:each="index : ${pagesIndexes}"
-             th:text="${index}"
-             th:href="@{'/page='+${index}}"
-             type="button"
-             class="btn btn-outline-warning waves-effect px-3">
-          </a>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
-  <hr>
+<hr>
 
-  <!-- Footer -->
-  <footer th:replace="fragments/footer.html :: footer"></footer>
+<!-- Footer -->
+<footer th:replace="fragments/footer.html :: footer"></footer>
 
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="js/clean-blog.min.js"></script>
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="js/clean-blog.min.js"></script>
 
 </body>
 
