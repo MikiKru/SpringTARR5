@@ -30,8 +30,18 @@ public class BlogController {
         this.userService = userService;
         this.postService = postService;
     }
+    @GetMapping("/addDislike&{postId}")
+    public String addDislike(
+            @PathVariable("postId") int postId,
+            Authentication auth){
+        String email = userService.getCredentials(auth).getUsername();
+        postService.addDislike(postId, userService.getUserByEmail(email).get());
+        return "redirect:/";
+    }
     @GetMapping("/addLike&{postId}")
-    public String addLike(@PathVariable("postId") int postId, Authentication auth){
+    public String addLike(
+            @PathVariable("postId") int postId,
+            Authentication auth){
         String email = userService.getCredentials(auth).getUsername();
         postService.addLike(postId, userService.getUserByEmail(email).get());
         return "redirect:/";

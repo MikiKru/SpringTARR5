@@ -23,11 +23,28 @@ public class PostService {
     @Autowired
     PostRepository postRepository;
 
+    public boolean addDislike(int postId, User hater){
+        Optional<Post> postToDislikeOptional = getPostById(postId);
+        if(postToDislikeOptional.isPresent()){                     // sprawdzam czy post istnieje
+            Post postToDislike = postToDislikeOptional.get();
+            // gdy jestem autorem lub już likeowałem tego posta to nie nie mogę hejtować
+            if(postToDislike.getAuthor().equals(hater) || postToDislike.getLikes().contains(hater)){
+                return false;
+            }
+            Set<User> currentDislikes = postToDislike.getLikes();     // pobieram aktualne dislike-i
+            boolean returnValue = currentDislikes.add(hater);      // dodaje dislike-a
+            postToDislike.setDislikes(currentDislikes);                  // aktualizuję zbiór dislike-ów
+            postRepository.save(postToDislike);                    // UPDATE post SET ....
+            return returnValue;
+        }
+        return false;
+    }
     public boolean addLike(int postId, User follower){
         Optional<Post> postToLikeOptional = getPostById(postId);
         if(postToLikeOptional.isPresent()){                     // sprawdzam czy post istnieje
             Post postToLike = postToLikeOptional.get();
-            if(postToLike.getAuthor().equals(follower)){        // gdy like-uje swojego posta
+            // gdy jestem autorem lub już hejtowałem tego posta to nie nie mogę like-ować
+            if(postToLike.getAuthor().equals(follower) || postToLike.getDislikes().contains(follower)){
                 return false;
             }
             Set<User> currentLikes = postToLike.getLikes();     // pobieram aktualne like-i
