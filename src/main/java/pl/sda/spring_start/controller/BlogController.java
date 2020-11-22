@@ -57,7 +57,7 @@ public class BlogController {
     ) {   // wywołaj metodę home()
         // dodaje atrybut do obiektu model, który może być przekazany do widoku
         // model.addAttribute(nazwaAtrybutu, wartość);
-        model.addAttribute("posts", postService.getAllPosts(0, Sort.Direction.DESC, "date_added"));    // pierwsze 5 postów
+        model.addAttribute("posts", postService.getAllPosts(0, Sort.Direction.DESC, "dateAdded"));    // pierwsze 5 postów
         model.addAttribute("auth", userService.getCredentials(auth));
         model.addAttribute("pagesIndexes", postService.generatePagesIndexes(postService.getAllPosts()));
         model.addAttribute("pageIndex", 1);
@@ -71,6 +71,8 @@ public class BlogController {
             Model model,
             Authentication auth
     ){
+        // w sytuacji sortowani po like-ach i dislike-ach
+
         model.addAttribute("posts",
                 postService.getAllPosts(pageIndex - 1,
                 sortDirection.equals("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC,
