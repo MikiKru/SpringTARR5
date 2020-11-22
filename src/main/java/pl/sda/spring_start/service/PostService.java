@@ -27,6 +27,9 @@ public class PostService {
         Optional<Post> postToLikeOptional = getPostById(postId);
         if(postToLikeOptional.isPresent()){                     // sprawdzam czy post istnieje
             Post postToLike = postToLikeOptional.get();
+            if(postToLike.getAuthor().equals(follower)){        // gdy like-uje swojego posta
+                return false;
+            }
             Set<User> currentLikes = postToLike.getLikes();     // pobieram aktualne like-i
             boolean returnValue = currentLikes.add(follower);   // dodaje like-a
             postToLike.setLikes(currentLikes);                  // aktualizuję zbiór like-ów
