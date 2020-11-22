@@ -30,21 +30,23 @@ public class BlogController {
         this.userService = userService;
         this.postService = postService;
     }
-    @GetMapping("/addDislike&{postId}")
+    @GetMapping("/addDislike&{pageIndex}&{postId}")
     public String addDislike(
             @PathVariable("postId") int postId,
+            @PathVariable("pageIndex") Integer pageIndex,
             Authentication auth){
         String email = userService.getCredentials(auth).getUsername();
         postService.addDislike(postId, userService.getUserByEmail(email).get());
-        return "redirect:/";
+        return "redirect:/page="+pageIndex;
     }
-    @GetMapping("/addLike&{postId}")
+    @GetMapping("/addLike&{pageIndex}&{postId}")
     public String addLike(
             @PathVariable("postId") int postId,
+            @PathVariable("pageIndex") Integer pageIndex,
             Authentication auth){
         String email = userService.getCredentials(auth).getUsername();
         postService.addLike(postId, userService.getUserByEmail(email).get());
-        return "redirect:/";
+        return "redirect:/page="+pageIndex;
     }
 
     @GetMapping("/")        // na adresie localhost:8080/
