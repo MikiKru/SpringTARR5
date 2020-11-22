@@ -32,12 +32,10 @@ public class PostService {
                 return false;
             }
             Set<User> currentDislikes = postToDislike.getDislikes();     // pobieram aktualne dislike-i
-            if(currentDislikes.add(hater)) {                             // gdy dodawanie zwraca true tzn, że nie byłem hejterem
-                postToDislike.setDislikes(currentDislikes);                  // aktualizuję zbiór dislike-ów
-            } else {
-                currentDislikes.remove(hater);                           // gdy byłem hejterem to usuwam dislike ze zbioru
-                postToDislike.setDislikes(currentDislikes);
-            }
+            if(!currentDislikes.add(hater)) {                             // gdy dodawanie zwraca true tzn, że nie byłem hejterem
+                currentDislikes.remove(hater);                          // aktualizuję zbiór dislike-ów
+            }                                                           // gdy byłem hejterem to usuwam dislike ze zbioru
+            postToDislike.setDislikes(currentDislikes);
             postRepository.save(postToDislike);                    // UPDATE post SET ....
             return true;
         }
@@ -52,12 +50,10 @@ public class PostService {
                 return false;
             }
             Set<User> currentLikes = postToLike.getLikes();     // pobieram aktualne like-i
-            if(currentLikes.add(follower)) {                    // dodaje like-a
-                postToLike.setLikes(currentLikes);
-            } else {
+            if(!currentLikes.add(follower)) {                    // dodaje like-a
                 currentLikes.remove(follower);
-                postToLike.setLikes(currentLikes);
             }
+            postToLike.setLikes(currentLikes);
             postRepository.save(postToLike);                    // UPDATE post SET ....
             return true;
         }
@@ -97,8 +93,8 @@ public class PostService {
         return pagesIndexes;
     }
 
-    public List<Post> getAllPosts(int pageIndex) {
-        Pageable pageable = PageRequest.of(pageIndex, 5, Sort.by(Sort.Direction.DESC, "dateAdded"));
+    public List<Post> getAllPosts(int pageIndex, Sort.Direction sortDirection, String sortFieldName) {
+        Pageable pageable = PageRequest.of(pageIndex, 5, Sort.by(sortDirection, sortFieldName));
         Page<Post> postPage = postRepository.findAll(pageable);
         return postPage.getContent();
     }
