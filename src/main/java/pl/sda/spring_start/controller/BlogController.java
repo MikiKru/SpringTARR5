@@ -30,6 +30,12 @@ public class BlogController {
         this.userService = userService;
         this.postService = postService;
     }
+    @GetMapping("/addLike&{postId}")
+    public String addLike(@PathVariable("postId") int postId, Authentication auth){
+        String email = userService.getCredentials(auth).getUsername();
+        postService.addLike(postId, userService.getUserByEmail(email).get());
+        return "redirect:/";
+    }
 
     @GetMapping("/")        // na adresie localhost:8080/
     public String home(
