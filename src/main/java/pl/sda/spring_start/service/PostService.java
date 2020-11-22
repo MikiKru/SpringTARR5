@@ -31,7 +31,7 @@ public class PostService {
             if(postToDislike.getAuthor().equals(hater) || postToDislike.getLikes().contains(hater)){
                 return false;
             }
-            Set<User> currentDislikes = postToDislike.getLikes();     // pobieram aktualne dislike-i
+            Set<User> currentDislikes = postToDislike.getDislikes();     // pobieram aktualne dislike-i
             boolean returnValue = currentDislikes.add(hater);      // dodaje dislike-a
             postToDislike.setDislikes(currentDislikes);                  // aktualizuję zbiór dislike-ów
             postRepository.save(postToDislike);                    // UPDATE post SET ....

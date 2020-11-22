@@ -28,6 +28,11 @@
           ' Date: ' + ${#temporals.format(post.getDateAdded(), 'dd-MM-yyyy HH:mm')}"> author category dateAdded </p>
                 <div class="clearfix" th:if="${auth != null}">
                     <a th:if="${!auth.getUsername().equals(post.getAuthor().getEmail())}"
+                       class="fa fa-thumbs-down"
+                       th:href="@{'/addDislike&'+${post.getPostId()}}"
+                       th:text="${post.getDislikes().size()}"> dislikes
+                    </a>
+                    <a th:if="${!auth.getUsername().equals(post.getAuthor().getEmail())}"
                        class="fa fa-thumbs-up"
                        th:href="@{'/addLike&'+${post.getPostId()}}"
                        th:text="${post.getLikes().size()}"> likes
