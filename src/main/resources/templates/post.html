@@ -29,8 +29,11 @@
                + ${#temporals.format(comment.getDateAdded(), 'dd-MM-yyyy HH:mm')} + ')'">
                 date
             </p>
-            <a class="fa fa-trash" aria-hidden="true"
-               th:href="@{'/comments&delete&' + ${comment.getCommentId()} + '&' +
+              <a
+                 th:if="${auth.getAuthorities().toString().toUpperCase().contains('ADMIN') ||
+                        auth.getUsername().equals(comment.getCommentAuthor().getEmail())}"
+                 class="fa fa-trash" aria-hidden="true"
+                 th:href="@{'/comments&delete&' + ${comment.getCommentId()} + '&' +
                ${comment.getRootPost().getPostId()}}"></a>
           </div>
           <h3>Add new comment</h3>
