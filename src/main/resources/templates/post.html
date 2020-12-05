@@ -24,13 +24,13 @@
 
           <div class="post-preview" th:each="comment : ${comments}">
             <p class="post-title" th:text="${comment.getMessage()}"> message </p>
-            <p class="post-meta" th:text="${comment.getAuthor().getEmail}"> author </p>
+            <p class="post-meta" th:text="${comment.getCommentAuthor().getEmail()}"> author </p>
             <p class="post-meta" th:text="${comment.getDateAdded()}"> date </p>
           </div>
           <h3>Add new comment</h3>
-          <form th:action="@{'/comments/addComment&postId=' + &{post.getPostId()}" th:method="POST" th:object="${commentDto}">
+          <form th:action="@{'/comments/addComment&postId=' + ${post.getPostId()}}" th:method="POST" th:object="${commentDto}">
               <div class="form-group">
-                  <div th:errors="*{message}"  style="font-size:10px" class="alert alert-danger" role="alert"> content error </div>
+                  <div th:text="${messageError}"  style="font-size:10px" class="alert alert-danger" role="alert"> content error </div>
                   <textarea
                           class="form-control"
                           id="content"
