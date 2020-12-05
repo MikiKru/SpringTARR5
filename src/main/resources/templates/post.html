@@ -5,41 +5,44 @@
 <head th:replace="fragments/head.html :: head"></head>
 
 <body>
-  <!--navigation-->
-  <nav th:replace="fragments/navigation.html :: nav"></nav>
+<!--navigation-->
+<nav th:replace="fragments/navigation.html :: nav"></nav>
 
-  <!-- Page Header -->
-  <header th:replace="fragments/header.html :: header(title='Michael\'s Blog', subtitle='The best blog in the World')"></header>
+<!-- Page Header -->
+<header th:replace="fragments/header.html :: header(title='Michael\'s Blog', subtitle='The best blog in the World')"></header>
 
-  <!-- Main Content -->
-  <div class="container">
+<!-- Main Content -->
+<div class="container">
     <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto" th:if="${post != null}">
-          <h1 th:text="${post.getTitle()}"></h1>
-          <h3 th:text="${'Category: ' + post.getCategory().getCategoryName()}"></h3>
-          <p th:text="${post.getContent()}"></p>
+        <div class="col-lg-8 col-md-10 mx-auto" th:if="${post != null}">
+            <h1 th:text="${post.getTitle()}"></h1>
+            <h3 th:text="${'Category: ' + post.getCategory().getCategoryName()}"></h3>
+            <p th:text="${post.getContent()}"></p>
 
-          <h3>Comments</h3>
-          <p th:if="${comments.size() == 0}" th:text="'This post is not commented yet'"></p>
+            <h3>Comments</h3>
+            <p th:if="${comments.size() == 0}" th:text="'This post is not commented yet'"></p>
 
-          <div class="post-preview" th:each="comment : ${comments}">
-            <p class="post-title" th:text="${comment.getMessage()}"> message </p>
-            <p class="post-meta"
-               th:text="'Author: ' + ${comment.getCommentAuthor().getEmail()} + '  ('
+            <div class="post-preview" th:each="comment : ${comments}">
+                <p class="post-title" th:text="${comment.getMessage()}"> message </p>
+                <div class="clearfix">
+                    <a class="post-meta"
+                       th:text="'Author: ' + ${comment.getCommentAuthor().getEmail()} + '  ('
                + ${#temporals.format(comment.getDateAdded(), 'dd-MM-yyyy HH:mm')} + ')'">
-                date
-            </p>
-              <a
-                 th:if="${auth.getAuthorities().toString().toUpperCase().contains('ADMIN') ||
+                        date
+                    </a>
+                    <a
+                            th:if="${auth.getAuthorities().toString().toUpperCase().contains('ADMIN') ||
                         auth.getUsername().equals(comment.getCommentAuthor().getEmail())}"
-                 class="fa fa-trash" aria-hidden="true"
-                 th:href="@{'/comments&delete&' + ${comment.getCommentId()} + '&' +
+                            class="fa fa-trash" aria-hidden="true"
+                            th:href="@{'/comments&delete&' + ${comment.getCommentId()} + '&' +
                ${comment.getRootPost().getPostId()}}"></a>
-          </div>
-          <h3>Add new comment</h3>
-          <!--<p th:if="${messageError != null}"> error </p>-->
-          <form th:action="@{'/comments/addComment&postId=' + ${post.getPostId()}}" th:method="POST" th:object="${commentDto}">
-              <div class="form-group">
+                </div>
+            </div>
+            <h3>Add new comment</h3>
+            <!--<p th:if="${messageError != null}"> error </p>-->
+            <form th:action="@{'/comments/addComment&postId=' + ${post.getPostId()}}" th:method="POST"
+                  th:object="${commentDto}">
+                <div class="form-group">
                   <textarea
                           class="form-control"
                           id="content"
@@ -47,24 +50,24 @@
                           th:field="*{message}"
                           placeholder="insert comment here">
                     </textarea><br>
-                  <input class="btn btn-success btn-rounded" th:type="submit" th:value="'add comment'">
-              </div>
-          </form>
+                    <input class="btn btn-success btn-rounded" th:type="submit" th:value="'add comment'">
+                </div>
+            </form>
 
 
-      </div>
-      <div class="col-lg-8 col-md-10 mx-auto" th:if="${post == null}">
-          <h1 th:text="'Bad request'"></h1>
-      </div>
+        </div>
+        <div class="col-lg-8 col-md-10 mx-auto" th:if="${post == null}">
+            <h1 th:text="'Bad request'"></h1>
+        </div>
     </div>
-  </div>
+</div>
 
-  <!-- Footer -->
-  <footer th:replace="fragments/footer.html :: footer"></footer>
+<!-- Footer -->
+<footer th:replace="fragments/footer.html :: footer"></footer>
 
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="js/clean-blog.min.js"></script>
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="js/clean-blog.min.js"></script>
 
 </body>
 
