@@ -68,13 +68,13 @@
                 <a th:each="index : ${pagesIndexes}"
                    th:if="${pageIndex == index}"
                    th:text="${index}"
-                   th:href="@{'/page='+${index}}"
+                   th:href="@{'/page='+${index}+'&'+${field}+'&'+${sortDirection}}"
+
                    type="button"
                    class="btn btn-outline-secondary waves-effect px-3"></a>
                 <a th:each="index : ${pagesIndexes}"
-                   th:if="${pageIndex != index}"
                    th:text="${index}"
-                   th:href="@{'/page='+${index}}"
+                   th:href="@{'/page='+${index}+'&'+${field}+'&'+${sortDirection}}"
                    type="button"
                    class="btn btn-outline-warning waves-effect px-3"></a>
             </div>

@@ -57,6 +57,8 @@ public class BlogController {
     ) {   // wywołaj metodę home()
         // dodaje atrybut do obiektu model, który może być przekazany do widoku
         // model.addAttribute(nazwaAtrybutu, wartość);
+        model.addAttribute("field", "dateAdded");
+        model.addAttribute("sortDirection", Sort.Direction.DESC);
         model.addAttribute("posts", postService.getAllPosts(0, Sort.Direction.DESC, "dateAdded"));    // pierwsze 5 postów
         model.addAttribute("auth", userService.getCredentials(auth));
         model.addAttribute("pagesIndexes", postService.generatePagesIndexes(postService.getAllPosts()));
