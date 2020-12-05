@@ -38,7 +38,7 @@ public class BlogController {
             Authentication auth){
         String email = userService.getCredentials(auth).getUsername();
         postService.addDislike(postId, userService.getUserByEmail(email).get());
-        return "redirect:/page="+pageIndex;
+        return "redirect:/page="+pageIndex + "&dateAdded&DESC";
     }
     @GetMapping("/addLike&{pageIndex}&{postId}")
     public String addLike(
@@ -47,7 +47,7 @@ public class BlogController {
             Authentication auth){
         String email = userService.getCredentials(auth).getUsername();
         postService.addLike(postId, userService.getUserByEmail(email).get());
-        return "redirect:/page="+pageIndex;
+        return "redirect:/page="+pageIndex + "&dateAdded&DESC";
     }
 
     @GetMapping("/")        // na adresie localhost:8080/
@@ -74,12 +74,15 @@ public class BlogController {
             Authentication auth
     ){
         // w sytuacji sortowani po like-ach i dislike-ach
-
-        model.addAttribute("posts",
-                postService.getAllPosts(pageIndex - 1,
-                sortDirection.equals("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC,
-                field
-                ));
+        if(!field.equals("result")) {   // gdy nie sortuje po resultach
+            model.addAttribute("posts",
+                    postService.getAllPosts(pageIndex - 1,
+                            sortDirection.equals("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC,
+                            field
+                    ));
+        } else {                        // gdy sortujemy po resultach
+            model.addAttribute("posts", postService.getAllPostsOrderByResult(sortDirection, pageIndex - 1));
+        }
         model.addAttribute("auth", userService.getCredentials(auth));
         model.addAttribute("pagesIndexes", postService.generatePagesIndexes(postService.getAllPosts()));
         model.addAttribute("pageIndex", pageIndex);
