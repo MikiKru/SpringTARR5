@@ -92,8 +92,7 @@ public class BlogController {
 
     @GetMapping("/posts&{postId}")
     public String getPost(
-            @PathVariable("postId") int postId, Model model, Authentication auth,
-            @ModelAttribute("messageError") String messageError
+            @PathVariable("postId") int postId, Model model, Authentication auth
     ) {
         Optional<Post> postOptional = postService.getPostById(postId);
         postOptional.ifPresent(post -> model.addAttribute("post", post));
@@ -103,7 +102,6 @@ public class BlogController {
                 model.addAttribute("comments", postService.getAllCommentsForPostOrderByDateAddedDesc(post)));
         // do uzupełnienia w formularzu
         model.addAttribute("commentDto", new CommentDto());
-        model.addAttribute("messageError", messageError);
         return "post";
     }
     @PostMapping("/comments/addComment&postId={postId}")
@@ -114,7 +112,7 @@ public class BlogController {
     ){
         if(bindingResult.hasErrors()) {
             System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-            model.addAttribute("messageError", "Your message is not valid");
+            model.addAttribute("messageError", "Your comment is not valid!");
             return "redirect:/posts&" + postId;
         }
             postService.addCommentToPostByUser(
