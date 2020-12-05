@@ -26,6 +26,7 @@ public class BlogController {
     private UserService userService;
     private PostService postService;
 
+
     @Autowired
     public BlogController(UserService userService, PostService postService) {
         this.userService = userService;
@@ -96,8 +97,38 @@ public class BlogController {
         Optional<Post> postOptional = postService.getPostById(postId);
         postOptional.ifPresent(post -> model.addAttribute("post", post));
         model.addAttribute("auth", userService.getCredentials(auth));
+        // do wypisania listy comentarzy danego posta
+        postOptional.ifPresent(post ->
+                model.addAttribute("comments", postService.getAllCommentsForPostOrderByDateAddedDesc(post)));
+        // do uzupełnienia w formularzu
+        model.addAttribute("commentDto", new CommentDto());
         return "post";
     }
+    @PostMapping("/comments/addComment&postId={postId}")
+    public String addCommentToPostByUser(
+            @PathVariable("postId") Integer postId,
+            @Valid @ModelAttribute("commentDto") CommentDto commentDto, BindingResult bindingResult,
+            Authentication auth
+    ){
+        if(bindingResult.hasErrors()) {
+            return "post";
+        }
+            postService.addCommentToPostByUser(
+                    commentDto,
+                    postService.getPostById(postId).get(),
+                    userService.getUserByEmail(userService.getCredentials(auth).getUsername()).get()
+            );
+        return "redirect:/posts&" + postId;
+    }
+
+    @GetMapping("/comments&delete&{commentId}&{postId}")
+    public String deletePostById(
+            @PathVariable("commentId") Integer commentId, @PathVariable("postId") Integer postId){
+        postService.deleteCommentById(commentId);
+        return "redirect:/posts&"+postId;
+    }
+
+
 
     @GetMapping("/addPost")                 // przejście metodą GET na stronę formularze
     public String addPost(Model model, Authentication auth) {     // i przekazanie pustego obiektu Post
