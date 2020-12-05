@@ -18,6 +18,16 @@
           <h1 th:text="${post.getTitle()}"></h1>
           <h3 th:text="${'Category: ' + post.getCategory().getCategoryName()}"></h3>
           <p th:text="${post.getContent()}"></p>
+
+          <h3>Comments</h3>
+          <p th:if="${comments.size() == 0}" th:text="'This post is not commented yet'"></p>
+          <div th:each="comment : ${comments}">
+            <p th:text="${comment.getMessage()}"> message </p>
+            <p th:text="${comment.getAuthor().getEmail}"> author </p>
+            <p th:text="${comment.getDateAdded()}"> date </p>
+          </div>
+          <h3>Add new comment</h3>
+
       </div>
       <div class="col-lg-8 col-md-10 mx-auto" th:if="${post == null}">
           <h1 th:text="'Bad request'"></h1>
