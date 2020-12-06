@@ -151,19 +151,16 @@ public class PostService {
     }
 
     public List<Post> getAllPostsOrderByResult(String sortDirection, int pageIndex){
-        Pageable pageable = PageRequest.of(pageIndex, 5);
-        int pageSize = pageable.getPageSize();
+        int pageSize = 5;
         int startItem = pageIndex * pageSize;
         if(sortDirection.equals("ASC")){
-            List<Post> posts = postRepository.findAllSortedByResultASC();
+            List<Post> posts = postRepository.findAllSortedByResultASC();   // cała lista postów uporządkowana po OCENACH
             int toIndex = Math.min(startItem + pageSize, posts.size());
-            List<Post> postsList = posts.subList(startItem, toIndex);
-            return new PageImpl<Post>(postsList, pageable, posts.size()).getContent();
+            return posts.subList(startItem, toIndex);                       // pobraną stronicę
         } else {
             List<Post> posts = postRepository.findAllSortedByResultDESC();
             int toIndex = Math.min(startItem + pageSize, posts.size());
-            List<Post> postsList = posts.subList(startItem, toIndex);
-            return new PageImpl<Post>(postsList, pageable, posts.size()).getContent();
+            return posts.subList(startItem, toIndex);
         }
     }
 
