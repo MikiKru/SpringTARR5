@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -23,7 +24,8 @@ public class Post {
     private String content;
     private LocalDateTime dateAdded;
     private Category category;
-    private String imagePath;
+    @Transient
+    private MultipartFile imagePath;
     @ManyToOne(
             fetch = FetchType.EAGER
     )
@@ -43,12 +45,20 @@ public class Post {
     )
     private Set<User> dislikes = new HashSet<>();
 
-    public Post(String title, String content, LocalDateTime dateAdded, Category category, String imagePath, User author) {
+    public Post(String title, String content, LocalDateTime dateAdded, Category category, MultipartFile imagePath, User author) {
         this.title = title;
         this.content = content;
         this.dateAdded = dateAdded;
         this.category = category;
         this.imagePath = imagePath;
+        this.author = author;
+    }
+
+    public Post(String title, String content, LocalDateTime dateAdded, Category category, User author) {
+        this.title = title;
+        this.content = content;
+        this.dateAdded = dateAdded;
+        this.category = category;
         this.author = author;
     }
 }

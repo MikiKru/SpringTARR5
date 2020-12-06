@@ -3,6 +3,7 @@ package pl.sda.spring_start.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
@@ -20,5 +21,5 @@ public class PostDto {  // DTO - data transfer object - obiekt wykorzystywany w 
     private String content;
 //    @NotBlank(message = "Category must be not empty")
     private Category category;
-    private String imagePath;
+    private MultipartFile imagePath;
 }

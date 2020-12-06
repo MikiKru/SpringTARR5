@@ -3,6 +3,7 @@ package pl.sda.spring_start.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import pl.sda.spring_start.model.*;
 import pl.sda.spring_start.repository.CommentRepository;
 import pl.sda.spring_start.repository.PostRepository;
@@ -84,9 +85,9 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
-    public void addPost(String title, String content, Category category, User author, String imagePath) {
+    public void addPost(String title, String content, Category category, User author, MultipartFile imagePath) {
         System.out.println("IMAGE PATH: " + imagePath);
-        postRepository.save(new Post(title, content, LocalDateTime.now(), category, imagePath, author));
+        postRepository.save(new Post(title, content, LocalDateTime.now(), category, author));
     }
 
     public List<Post> getAllPosts() {

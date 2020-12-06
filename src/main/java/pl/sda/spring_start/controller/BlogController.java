@@ -162,7 +162,7 @@ public class BlogController {
         userDetails.getAuthorities().stream().forEach(o -> System.out.println(o));
         // zapisanie nowego posta do db
         postService.addPost(postDto.getTitle(), postDto.getContent(), postDto.getCategory(),
-                userService.getUserByEmail(loggedEmail).get());  // przypisanie dodawanego posta do zalogowanego użytkownika
+                userService.getUserByEmail(loggedEmail).get(), postDto.getImagePath());  // przypisanie dodawanego posta do zalogowanego użytkownika
         return "redirect:/";                // przekierowuje na ades, który zwraca jakiś widok
     }
 
