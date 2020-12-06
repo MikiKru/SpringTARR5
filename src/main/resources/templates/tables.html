@@ -87,6 +87,7 @@
                                             <th>REGISTRATION TIME</th>
                                             <th>STATUS</th>
                                             <th>ROLES</th>
+                                            <th>ADD ADMIN</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -97,6 +98,7 @@
                                             <th th:text="${#temporals.format(user.getRegistrationDateTime(), 'dd-MM-yyyy HH:mm')}">REGISTRATION TIME</th>
                                             <th th:text="${user.isStatus()}">STATUS</th>
                                             <th th:text="${user.getRoles().toString().replace('[','').replace(']','')}">ROLES</th>
+                                            <th><a th:href="@{/}">link</a></th>
                                         </tr>
                                     </tbody>
                                 </table>
