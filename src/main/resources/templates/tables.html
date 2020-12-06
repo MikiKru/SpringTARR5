@@ -96,7 +96,7 @@
                                             <th th:text="${user.getPassword().substring(user.getPassword().length()-8)}">PASSWORD</th>
                                             <th th:text="${#temporals.format(user.getRegistrationDateTime(), 'dd-MM-yyyy HH:mm')}">REGISTRATION TIME</th>
                                             <th th:text="${user.isStatus()}">STATUS</th>
-                                            <th th:text="${user.getRoles()}">ROLES</th>
+                                            <th th:text="${user.getRoles().toString().replace('[','').replace(']','')}">ROLES</th>
                                         </tr>
                                     </tbody>
                                 </table>
