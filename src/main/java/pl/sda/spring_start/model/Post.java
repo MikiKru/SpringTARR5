@@ -23,6 +23,7 @@ public class Post {
     private String content;
     private LocalDateTime dateAdded;
     private Category category;
+    private String imagePath;
     @ManyToOne(
             fetch = FetchType.EAGER
     )
@@ -42,11 +43,12 @@ public class Post {
     )
     private Set<User> dislikes = new HashSet<>();
 
-    public Post(String title, String content, LocalDateTime dateAdded, Category category, User author) {
+    public Post(String title, String content, LocalDateTime dateAdded, Category category, String imagePath, User author) {
         this.title = title;
         this.content = content;
         this.dateAdded = dateAdded;
         this.category = category;
+        this.imagePath = imagePath;
         this.author = author;
     }
 }

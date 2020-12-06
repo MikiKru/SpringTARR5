@@ -84,8 +84,9 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
-    public void addPost(String title, String content, Category category, User author) {
-        postRepository.save(new Post(title, content, LocalDateTime.now(), category, author));
+    public void addPost(String title, String content, Category category, User author, String imagePath) {
+        System.out.println("IMAGE PATH: " + imagePath);
+        postRepository.save(new Post(title, content, LocalDateTime.now(), category, imagePath, author));
     }
 
     public List<Post> getAllPosts() {

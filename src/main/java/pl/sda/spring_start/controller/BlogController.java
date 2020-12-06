@@ -114,11 +114,8 @@ public class BlogController {
             Optional<Post> postOptional = postService.getPostById(postId);
             postOptional.ifPresent(post -> model.addAttribute("post", post));
             model.addAttribute("auth", userService.getCredentials(auth));
-            // do wypisania listy comentarzy danego posta
             postOptional.ifPresent(post ->
                     model.addAttribute("comments", postService.getAllCommentsForPostOrderByDateAddedDesc(post)));
-            // do uzupełnienia w formularzu
-//            model.addAttribute("commentDto", new CommentDto());
             return "post";
         }
             postService.addCommentToPostByUser(
@@ -228,7 +225,7 @@ public class BlogController {
         if (postService.getPostById(postId).isPresent()) {
             Post postToUpdate = postService.getPostById(postId).get();
             PostDto postDto = new PostDto(
-                    postToUpdate.getTitle(), postToUpdate.getContent(), postToUpdate.getCategory());
+                    postToUpdate.getTitle(), postToUpdate.getContent(), postToUpdate.getCategory(), postToUpdate.getImagePath());
             model.addAttribute("postDto", postDto);
             model.addAttribute("postId", postId);
             model.addAttribute("categories", new ArrayList<>(Arrays.asList(Category.values())));

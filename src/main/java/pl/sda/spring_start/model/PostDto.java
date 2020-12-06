@@ -20,4 +20,5 @@ public class PostDto {  // DTO - data transfer object - obiekt wykorzystywany w 
     private String content;
 //    @NotBlank(message = "Category must be not empty")
     private Category category;
+    private String imagePath;
 }
