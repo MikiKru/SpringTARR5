@@ -82,6 +82,7 @@ public class BlogController {
                             field
                     ));
         } else {                        // gdy sortujemy po resultach
+            System.out.println("PAGE: " + (pageIndex - 1) + " elems: " + postService.getAllPostsOrderByResult(sortDirection, pageIndex - 1).size() );
             model.addAttribute("posts", postService.getAllPostsOrderByResult(sortDirection, pageIndex - 1));
         }
         model.addAttribute("auth", userService.getCredentials(auth));

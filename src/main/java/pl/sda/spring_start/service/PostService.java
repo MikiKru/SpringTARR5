@@ -15,10 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class PostService {
@@ -155,10 +152,18 @@ public class PostService {
 
     public List<Post> getAllPostsOrderByResult(String sortDirection, int pageIndex){
         Pageable pageable = PageRequest.of(pageIndex, 5);
+        int pageSize = pageable.getPageSize();
+        int startItem = pageIndex * pageSize;
         if(sortDirection.equals("ASC")){
-            return postRepository.findAllSortedByResultASC();
+            List<Post> posts = postRepository.findAllSortedByResultASC();
+            int toIndex = Math.min(startItem + pageSize, posts.size());
+            List<Post> postsList = posts.subList(startItem, toIndex);
+            return new PageImpl<Post>(postsList, pageable, posts.size()).getContent();
         } else {
-            return postRepository.findAllSortedByResultDESC();
+            List<Post> posts = postRepository.findAllSortedByResultDESC();
+            int toIndex = Math.min(startItem + pageSize, posts.size());
+            List<Post> postsList = posts.subList(startItem, toIndex);
+            return new PageImpl<Post>(postsList, pageable, posts.size()).getContent();
         }
     }
 
