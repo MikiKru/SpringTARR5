@@ -99,9 +99,9 @@
                                             <th th:text="${#temporals.format(user.getRegistrationDateTime(), 'dd-MM-yyyy HH:mm')}">REGISTRATION TIME</th>
                                             <th th:text="${user.isStatus()}">STATUS</th>
                                             <th th:text="${user.getRoles().toString().replace('[','').replace(']','')}">ROLES</th>
-                                            <th><a th:href="@{/users/addAdmin}" class="fas fa-user"></a></th>
-                                            <th th:if="${user.isStatus()}"><a th:href="@{/users/changeStatus}" class="fas fa-check-square"></a></th>
-                                            <th th:if="${!user.isStatus()}"><a th:href="@{/users/changeStatus}" class="fas fa-square"></a></th>
+                                            <th><a th:href="@{'/users/addAdmin&' + ${user.getUserId()}}" class="fas fa-user"></a></th>
+                                            <th th:if="${user.isStatus()}"><a th:href="@{'/users/changeStatus&' + ${user.getUserId()}}" class="fas fa-check-square"></a></th>
+                                            <th th:if="${!user.isStatus()}"><a th:href="@{/users/changeStatus&' + ${user.getUserId()}}" class="fas fa-square"></a></th>
                                         </tr>
                                     </tbody>
                                 </table>
