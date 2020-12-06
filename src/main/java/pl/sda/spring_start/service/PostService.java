@@ -85,6 +85,8 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
+    // obsługa plików zdjęciowych
+
     public void addPost(String title, String content, Category category, User author, MultipartFile imagePath) {
         System.out.println("IMAGE PATH: " + imagePath);
         postRepository.save(new Post(title, content, LocalDateTime.now(), category, author));
