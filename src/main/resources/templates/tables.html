@@ -87,7 +87,8 @@
                                             <th>REGISTRATION TIME</th>
                                             <th>STATUS</th>
                                             <th>ROLES</th>
-                                            <th>ADD ADMIN</th>
+                                            <th>ADMIN</th>
+                                            <th>ENBL/DISBL</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -98,7 +99,9 @@
                                             <th th:text="${#temporals.format(user.getRegistrationDateTime(), 'dd-MM-yyyy HH:mm')}">REGISTRATION TIME</th>
                                             <th th:text="${user.isStatus()}">STATUS</th>
                                             <th th:text="${user.getRoles().toString().replace('[','').replace(']','')}">ROLES</th>
-                                            <th><a th:href="@{/}">link</a></th>
+                                            <th><a th:href="@{/}" class="fas fa-user"></a></th>
+                                            <th th:if="${user.isStatus()}"><a th:href="@{/}" class="fas fa-check-square"></a></th>
+                                            <th th:if="${!user.isStatus()}"><a th:href="@{/}" class="fas fa-square"></a></th>
                                         </tr>
                                     </tbody>
                                 </table>
