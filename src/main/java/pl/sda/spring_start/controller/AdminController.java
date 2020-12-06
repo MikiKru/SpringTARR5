@@ -25,10 +25,12 @@ public class AdminController {
     }
     @GetMapping("/users/addAdmin&{userId}")
     public String addAdmin(@PathVariable("userId") int userId){
-        return null;
+        userService.addAdmin(userId);
+        return "redirect:/admin/";
     }
     @GetMapping("/users/changeStatus&{userId}")
     public String changeUserStatus(@PathVariable("userId") int userId){
-        return null;
+        userService.changeUserStatus(userId);
+        return "redirect:/admin/";
     }
 }
